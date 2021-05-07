@@ -31,6 +31,9 @@ interface WeatherApiService{
     @GET("weather/")
     fun getProperties( @Query("lat") lat:Double,@Query("lon") lon:Double,
                           @Query("appid") appId:String): Deferred<City>
+    @GET("weather/")
+    fun getPropertyCity( @Query("q") q:String,
+                       @Query("appid") appId:String): Deferred<City>
 
 }
 

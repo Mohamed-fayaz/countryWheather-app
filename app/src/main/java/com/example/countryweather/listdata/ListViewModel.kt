@@ -1,6 +1,8 @@
 package com.example.countryweather.listdata
 
+import android.text.Editable
 import android.util.Log
+import android.widget.EditText
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -18,7 +20,7 @@ class ListViewModel(val dataSource: CountryDao) : ViewModel() {
 
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
-
+   var  initialState: LiveData<List<CountryProperty>>? = null
     private val _status = MutableLiveData<String>()
 
     val status: LiveData<String>
@@ -26,7 +28,7 @@ class ListViewModel(val dataSource: CountryDao) : ViewModel() {
 
  private  var _properties  : LiveData<List<CountryProperty>> = dataSource.getAllCountries()
 
-    val properties: LiveData<List<CountryProperty>>?
+    val properties: LiveData<List<CountryProperty>>
         get() = _properties
 
     init {
@@ -51,14 +53,15 @@ class ListViewModel(val dataSource: CountryDao) : ViewModel() {
     }
      fun getCountryProperties() {
         coroutineScope.launch {
-            val initialState: LiveData<List<CountryProperty>> = dataSource.getAllCountries()
-            if (initialState.value == null) {
+            initialState = dataSource.getAllCountries()
+            Log.i("inistial state","${initialState!!.value.toString()}")
+            if (initialState!!.value == null) {
                 var getPropertiesDeferred = CountryApi.retrofitService.getProperties()
 
                 try {
 
                     var listResult = getPropertiesDeferred.await()
-                    Log.i("val Msg", listResult.toString())
+                    Log.i("call Msg","called for retrofit")
 
                     insert(listResult)
 
@@ -67,12 +70,24 @@ class ListViewModel(val dataSource: CountryDao) : ViewModel() {
                     e.message?.let { Log.i("Error Msg", it) }
                 }
             }
+
         }
     }
 
   fun insert(countryList :List<CountryProperty>) {
       coroutineScope.launch {
         dataSource.insertAllCountries(countryList)}
+
+    }
+    fun filter(s : Editable): MutableList<CountryProperty>{
+        val temp :  MutableList<CountryProperty> = arrayListOf()
+        for (country in properties.value!!){
+            if (country.name.toLowerCase().contains(s.toString())){
+                temp.add(country)
+            }
+
+        }
+        return temp
 
     }
 

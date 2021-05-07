@@ -1,7 +1,9 @@
 package com.example.countryweather
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
@@ -32,14 +34,21 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
                 .load(imgUri, imgView)
     }
 }
+//
+//@BindingAdapter("listData")
+//fun bindRecyclerView(recyclerView: RecyclerView, data: List<CountryProperty>?) {
+//    val adapter = recyclerView.adapter as CountryRvAdapter
+//    Log.i("data in adapter",data.toString())
+//    adapter.submitList(data)
+//}
 
-@BindingAdapter("listData")
-fun bindRecyclerView(recyclerView: RecyclerView, data: List<CountryProperty>?) {
-    val adapter = recyclerView.adapter as CountryRvAdapter
-    Log.i("data in adapter",data.toString())
-    adapter.submitList(data)
+@BindingAdapter("tempFormat")
+fun TextView.tempFormat(temp : Double){
+
+    var Newtemp = temp - 273.15
+    this.text =   Newtemp.format(0) +" °C"
 }
-
+fun Double.format(digits: Int) = "%.${digits}f".format(this)
 //@BindingAdapter("marsApiStatus")
 //fun bindStatus(statusImageView: ImageView, status: MarsApiStatus?) {
 //    when (status) {

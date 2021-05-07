@@ -16,7 +16,7 @@
         tools:context="com.example.android.marsrealestate.MainActivity">
 
         <EditText
-            android:id="@+id/editTextTextPersonName"
+            android:id="@+id/editSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/white"
@@ -26,9 +26,12 @@
             android:inputType="textPersonName"
             android:paddingRight="10dp"
             android:paddingLeft="20dp"
+            android:textColor="@color/black"
 
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="16dp" />
+
+
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/photos_grid"
@@ -41,9 +44,9 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName"
+            app:layout_constraintTop_toBottomOf="@+id/editSearch"
             app:layout_constraintVertical_bias="0.0"
-            app:listData="@{viewModel.properties}"
+
             tools:listitem="@layout/grid_view_item" />
 
 
